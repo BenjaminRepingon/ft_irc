@@ -6,7 +6,7 @@
 /*   By: mgarcin <mgarcin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/21 16:23:33 by rbenjami          #+#    #+#             */
-/*   Updated: 2014/05/23 11:12:19 by mgarcin          ###   ########.fr       */
+/*   Updated: 2014/05/23 15:56:18 by mgarcin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int			new_client(t_server *server, int *actual, char *buff)
 	return (csock);
 }
 
-static void	remove_client(t_server *serv, int rm, int *actual)
+void		remove_client(t_server *serv, int rm, int *actual)
 {
 	t_client	*clt;
 
@@ -92,12 +92,7 @@ void		client_talking(t_server *server, int *actual, char *buff)
 			client = server->clients[i];
 			if (read_client(server->clients[i].sock, buff) == 0)
 			{
-				close(server->clients[i].sock);
-				remove_client(server, i, actual);
-				ft_strncpy(buff, client.name, NAME_LEN);
-				ft_strncat(buff, " disconnected !", BUF_SIZE - ft_strlen(buff));
-				send_to_all(server->clients, client, *actual, buff, 1);
-				ft_bzero(client.name, NAME_LEN);
+				if_read(server, actual, buff, i);
 			}
 			else if (buff[0] == '/')
 			{
@@ -105,7 +100,7 @@ void		client_talking(t_server *server, int *actual, char *buff)
 					write_client(server->clients[i].sock, tmp);
 			}
 			else
-				send_to_all(server->clients, client, *actual, buff, 0);
+				send_to_all(server->clients, client, *actual, buff);
 			break ;
 		}
 		i++;

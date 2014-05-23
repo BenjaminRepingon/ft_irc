@@ -6,37 +6,12 @@
 /*   By: mgarcin <mgarcin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/22 10:55:34 by dsousa            #+#    #+#             */
-/*   Updated: 2014/05/23 11:21:10 by mgarcin          ###   ########.fr       */
+/*   Updated: 2014/05/23 15:32:52 by mgarcin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <libft.h>
 #include "../includes/serveur.h"
-
-static char		*ft_who(char *buff, t_client *client, t_server *server)
-{
-	int			i;
-	int			count;
-
-	i = 0;
-	count = 0;
-	(void)buff;
-	while (i < MAX_CLIENTS)
-	{
-		if (server->clients[i].name)
-		{
-			if (check_channel(*client, server->clients[i]))
-			{
-				if (count)
-					write_client(client->sock, "\n");
-				write_client(client->sock, server->clients[i].name);
-				count++;
-			}
-		}
-		i++;
-	}
-	return (NULL);
-}
 
 static char		*ft_nick(char *buff, t_client *client, t_server *server)
 {
@@ -81,42 +56,6 @@ static char		*ft_join(char *buff, t_client *client, t_server *server)
 	client->channel[i] = ft_strdup(tmp);
 	client->nb_channel++;
 	return ("Channel join !");
-}
-
-static char		*ft_leave(char *buff, t_client *client, t_server *server)
-{
-	char	*tmp;
-	int		i;
-
-	i = 0;
-	(void)server;
-	if (ft_strlen(buff) > 6)
-	{
-		if (buff[6] != ' ')
-			return ("Invalid command");
-		tmp = ft_strsub(buff, 7, ft_strlen(buff) - 7);
-		while (i < MAX_CHANNEL)
-		{
-			if (client->channel[i] && tmp)
-			{
-				if (ft_strcmp(client->channel[i], tmp) == 0)
-				{
-					client->channel[i] = NULL;
-					client->nb_channel--;
-					return ("Leave success");
-				}
-			}
-			i++;
-		}
-		return ("Channel not found");
-	}
-	else
-	{
-		while (i < MAX_CHANNEL)
-			client->channel[i++] = NULL;
-		client->nb_channel = 0;
-	}
-	return ("All channels leaved");
 }
 
 static char		*ft_msg(char *buff, t_client *client, t_server *server)

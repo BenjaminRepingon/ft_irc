@@ -6,7 +6,7 @@
 #    By: mgarcin <mgarcin@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/02/26 13:13:47 by rbenjami          #+#    #+#              #
-#    Updated: 2014/05/23 10:58:01 by mgarcin          ###   ########.fr        #
+#    Updated: 2014/05/23 14:49:24 by mgarcin          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,8 @@ SERVEUR_FILES		=	$(SERVEUR).c \
 						read_write.c \
 						client_ctrl.c \
 						verif.c \
-						cmd.c
+						cmd.c \
+						cmd2.c
 
 SERVEUR_SRC			=	$(addprefix $(SERVEUR)_dir/$(SRC_DIR), $(SERVEUR_FILES))
 
